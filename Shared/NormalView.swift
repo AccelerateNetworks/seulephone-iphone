@@ -9,471 +9,318 @@ import SwiftUI
 import linphonesw
 
 struct NormalView: View {
-	@State private var menu: String = "settings"
+	@State private var menu: String = "dailpad"
 	@State private var status: String = "Loading Status...  ⚪️"
 	@State var dialedNumber: String = ""
 	
 	var body: some View {
-		switch(menu) {
-		// MARK: Settings Screen
-		case "settings" :
-			NavigationView {
-				ZStack {
-					Color("ANBlue")
-						.ignoresSafeArea(edges: .top)
-						.ignoresSafeArea(edges: .bottom)
-					Group {
-						VStack {
+		
+		NavigationView {
+			ZStack {
+				Color("ANBlue")
+					.ignoresSafeArea(edges: .top)
+					.ignoresSafeArea(edges: .bottom)
+				VStack {
+					HStack{
+						Spacer()
+					}
+					Spacer()
+				}
+				Group {
+					switch(menu) {
+						// MARK: Settings Screen
+					case "settings" :
+						Group {
 							VStack {
-								Text("Accounts")
-									.font(.title)
-									.padding()
-								if LinphoneAPI().getSetupStatus() {
+								VStack {
+									Text("Settings")
+										.font(.largeTitle)
+										.padding()
+									
 									Group {
 										List {
-											ForEach(LinphoneAPI().getAccounts()) { account in
-												NavigationLink(destination: ZStack {
-													Color("ANBlue")
-														.ignoresSafeArea(edges: .top)
-													VStack {
-														Text("")
-															.navigationBarTitleDisplayMode(.inline)
-													}
-												})
-												{
-													HStack{
-														Text("Account" + "dets")
-															.padding(16)
-														Spacer()
+											HStack {
+												Spacer()
+												Text("Accounts")
+													.font(.title2)
+													.bold()
+													.padding()
+												Spacer()
+											}
+											if LinphoneAPI().getSetupStatus() {
+												ForEach(LinphoneAPI().getAccounts(), id: \.self) { account in // F*** you apple, `id: \.self` makes no sense, and took me like 4 days to figure out
+													NavigationLink(destination: ZStack {
+														Color("ANBlue")
+															.ignoresSafeArea(edges: .top)
+														VStack {
+															Text(account)
+																.navigationBarTitleDisplayMode(.inline)
+														}
+													})
+													{
+														HStack{
+															Text(account + " dets")
+																.padding(16)
+															Spacer()
+														}
 													}
 												}
+											} else {
+												HStack {
+													Spacer()
+													Text("no accounts...")
+													Spacer()
+												}
 											}
+											
+											Button(action: {
+												
+											}, label: {
+												HStack {
+													Spacer()
+													Text("Resetup")
+													Spacer()
+												}
+											})
 										}
 									}
+									NavigationLink(destination: {
+										
+									}, label: {
+										
+									})
 								}
-								NavigationLink(destination: {
-									
-								}, label: {
-									
-								})
 							}
-							.foregroundColor(.defaultForeground)
-							.background(Color.defaultBackground)
-							.cornerRadius(20)
-							.padding(8)
+						}
+						// MARK: History Screen
+					case "history" :
+						VStack {
+							HStack(){
+								Spacer()
+								Text("")
+							}
 							Spacer()
 						}
-					}
-					.toolbar {
-						ToolbarItem(placement: .principal) {
-							HStack(spacing: 0) {
+						// MARK: Contacts Screen
+					case "contacts" :
+						VStack {
+							HStack(){
+								Spacer()
+								Text("")
+							}
+							Spacer()
+						}
+						// MARK: Dialpad Screen
+					case "dialpad" :
+						VStack{
+							HStack{
+								if dialedNumber == "" {
+									// This is going to be for a paste button
+									//								Button(action: {
+									//									dialedNumber =
+									//								}, label: {
+									//									Image(systemName: "arrow.right.doc.on.clipboard")
+									//								})
+									Text("<425-499-7999>")
+										.foregroundColor(.white)
+								} else {
+									Text(dialedNumber)
+										.foregroundColor(.defaultForeground)
+									
+								}
+								Spacer()
 								Button(action: {
-									
+									dialedNumber = String(dialedNumber.dropLast())
 								}, label: {
-									Image(systemName: "gearshape.fill")
+									Image(systemName: "delete.left")
 								})
-								Spacer()
-								Text(status)
-									.font(.headline)
-									.foregroundColor(.white)
 							}
-						}
-					}
-					.navigationBarTitleDisplayMode(.inline)
-				}
-			}
-		// MARK: History Screen
-		case "history" :
-			NavigationView {
-				ZStack {
-					Color("ANBlue")
-						.ignoresSafeArea(edges: .top)
-						.ignoresSafeArea(edges: .bottom)
-					VStack {
-						HStack(){
-							Spacer()
-							Text("")
-						}
-						Spacer()
-					}
-					.background(Color.defaultBackground)
-					.navigationBarTitleDisplayMode(.inline)
-					.toolbar {
-						ToolbarItemGroup(placement: .bottomBar) {
-							Spacer()
-							Button(action: {
-							}, label: {
-								Image(systemName: "clock.fill")
-							});
-							Spacer()
-							Button(action: {
-							}, label: {
-								Image(systemName: "person")
-							})
-							Spacer()
-							Button(action: {
-								menu = "dialpad"
-							}, label: {
-								Image(systemName: "circle.grid.3x3")
-							})
-							Spacer()
-							//							Button(action: {
-							//							}, label: {
-							//								Image(systemName: "text.bubble")
-							//							})
-							//							Spacer()
-							//							Button(action: {
-							//							}, label: {
-							//								Image(systemName: "gearshape")
-							//							})
-							//							Spacer()
-						}
-					}
-					.toolbar {
-						ToolbarItem(placement: .principal) {
-							HStack {
-								Text(status)
-									.font(.headline)
-									.foregroundColor(.white)
-								Spacer()
-							}
-						}
-					}
-				}
-			}
-		// MARK: Contacts Screen
-		case "contacts" :
-			NavigationView {
-				ZStack {
-					Color("ANBlue")
-						.ignoresSafeArea(edges: .top)
-						.ignoresSafeArea(edges: .bottom)
-					VStack {Spacer()
-					}
-					.background(Color.defaultBackground)
-					.navigationBarTitleDisplayMode(.inline)
-					.toolbar {
-						ToolbarItemGroup(placement: .bottomBar) {
-							Spacer()
-							Button(action: {
-							}, label: {
-								Image(systemName: "clock")
-							});
-							Spacer()
-							Button(action: {
-							}, label: {
-								Image(systemName: "person")
-							})
-							Spacer()
-							Button(action: {
-							}, label: {
-								Image(systemName: "circle.grid.3x3.fill")
-							})
-							Spacer()
-							//							Button(action: {
-							//							}, label: {
-							//								Image(systemName: "text.bubble")
-							//							})
-							//							Spacer()
-							//							Button(action: {
-							//							}, label: {
-							//								Image(systemName: "gearshape")
-							//							})
-							//							Spacer()
-						}
-					}
-					.toolbar {
-						ToolbarItem(placement: .principal) {
-							HStack {
-								Text(status)
-									.font(.headline)
-									.foregroundColor(.white)
-								Spacer()
-							}
-						}
-					}
-				}
-			}
-		// MARK: Dialpad Screen
-		case "dialpad" :
-			NavigationView {
-				ZStack {
-					Color("ANBlue")
-						.ignoresSafeArea(edges: .top)
-						.ignoresSafeArea(edges: .bottom)
-					VStack() {
-						HStack{
-							if dialedNumber == "" {
-								// This is going to be for a paste button
-//								Button(action: {
-//									dialedNumber =
-//								}, label: {
-//									Image(systemName: "arrow.right.doc.on.clipboard")
-//								})
-								Text("<425-499-7999>")
-									.foregroundColor(.white)
-							} else {
-								Text(dialedNumber)
-									.foregroundColor(.defaultForeground)
-								
-							}
-							Spacer()
-							Button(action: {
-								dialedNumber = String(dialedNumber.dropLast())
-							}, label: {
-								Image(systemName: "delete.left")
-							})
-						}
 							.padding()
 							.background(Color("ANOrange"))
-						Group {
-							Spacer()
-							HStack {
+							Group {
 								Spacer()
-								Button(action: {
-									//play button press sound?
-									dialedNumber = dialedNumber + "1"
-								}, label: {
-									VStack{
-										Text("1")
-											.font(.largeTitle)
-										Image(systemName: "recordingtape")
-									}
+								HStack {
+									Spacer()
+									Button(action: {
+										//play button press sound?
+										dialedNumber = dialedNumber + "1"
+									}, label: {
+										VStack{
+											Text("1")
+												.font(.largeTitle)
+											Image(systemName: "recordingtape")
+										}
 										.frame(width: 80, height: 80)
-								})
+									})
+									Spacer()
+									dialPadButton(number: "2", t9chars: "ABC")
+									Spacer()
+									dialPadButton(number: "3", t9chars: "DEF")
+									Spacer()
+								}
 								Spacer()
-								Button(action: {
-									//play button press sound?
-									dialedNumber = dialedNumber + "2"
-								}, label: {
-									VStack{
-										Text("2")
-											.font(.largeTitle)
-										Text("ABC")
-									}
-									.frame(width: 80, height: 80)
-										
-								})
+								HStack {
+									Spacer()
+									dialPadButton(number: "4", t9chars: "GHI")
+									Spacer()
+									dialPadButton(number: "5", t9chars: "JKL")
+									Spacer()
+									dialPadButton(number: "6", t9chars: "MNO")
+									Spacer()
+								}
 								Spacer()
-								Button(action: {
-									//play button press sound?
-									dialedNumber = dialedNumber + "3"
-								}, label: {
-									VStack{
-										Text("3")
-											.font(.largeTitle)
-										Text("DEF")
-									}
-									.frame(width: 80, height: 80)
-								})
+								HStack {
+									Spacer()
+									dialPadButton(number: "7", t9chars: "PQRS")
+									Spacer()
+									dialPadButton(number: "8", t9chars: "TUV")
+									Spacer()
+									dialPadButton(number: "9", t9chars: "WXYZ")
+									Spacer()
+								}
 								Spacer()
+								HStack {
+									Spacer()
+									Button(action: {
+										//play button press sound?
+										dialedNumber = dialedNumber + "*"
+									}, label: {
+										VStack{
+											Image(systemName: "staroflife.fill")
+										}
+										.frame(width: 80, height: 80)
+									})
+									Spacer()
+									dialPadButton(number: "0", t9chars: "+")
+									Spacer()
+									dialPadButton(number: "#", t9chars: nil)
+									Spacer()
+								}
+							}.foregroundColor(Color("ANBlue"))
+							Spacer()
+							
+							Group{
+								HStack{
+									Spacer()
+										.frame(width: 8)
+									Button(action: {
+										//TODO dial out
+									}, label: {
+										HStack{
+											Spacer()
+											Image(systemName: "phone.fill")
+												.resizable()
+												.frame(width: 40, height: 40)
+												.padding(8)
+											Spacer()
+										}
+										.background(Color.green)
+									}).cornerRadius(20)
+									Spacer()
+										.frame(width: 8)
+								}
 							}
 							Spacer()
-							HStack {
-								Spacer()
-								Button(action: {
-									//play button press sound?
-									dialedNumber = dialedNumber + "4"
-								}, label: {
-									VStack{
-										Text("4")
-											.font(.largeTitle)
-										Text("GHI")
-									}
-									.frame(width: 80, height: 80)
-								})
-								Spacer()
-								Button(action: {
-									//play button press sound?
-									dialedNumber = dialedNumber + "5"
-								}, label: {
-									VStack{
-										Text("5")
-											.font(.largeTitle)
-										Text("JKL")
-									}
-									.frame(width: 80, height: 80)
-								})
-								Spacer()
-								Button(action: {
-									//play button press sound?
-									dialedNumber = dialedNumber + "6"
-								}, label: {
-									VStack{
-										Text("6")
-											.font(.largeTitle)
-										Text("MNO")
-									}
-									.frame(width: 80, height: 80)
-								})
-								Spacer()
-							}
-							Spacer()
-							HStack {
-								Spacer()
-								Button(action: {
-									//play button press sound?
-									dialedNumber = dialedNumber + "7"
-								}, label: {
-									VStack{
-										Text("7")
-											.font(.largeTitle)
-										Text("PQRS")
-									}
-									.frame(width: 80, height: 80)
-								})
-								Spacer()
-								Button(action: {
-									//play button press sound?
-									dialedNumber = dialedNumber + "8"
-								}, label: {
-									VStack{
-										Text("8")
-											.font(.largeTitle)
-										Text("TUV")
-									}
-									.frame(width: 80, height: 80)
-								})
-								Spacer()
-								Button(action: {
-									//play button press sound?
-									dialedNumber = dialedNumber + "9"
-								}, label: {
-									VStack{
-										Text("9")
-											.font(.largeTitle)
-										Text("WXYZ")
-									}
-									.frame(width: 80, height: 80)
-								})
-								Spacer()
-							}
-							Spacer()
-							HStack {
-								Spacer()
-								Button(action: {
-									//play button press sound?
-									dialedNumber = dialedNumber + "*"
-								}, label: {
-									VStack{
-										Image(systemName: "staroflife.fill")
-									}
-									.frame(width: 80, height: 80)
-								})
-								Spacer()
-								Button(action: {
-									//play button press sound?
-									dialedNumber = dialedNumber + "0"
-								}, label: {
-									VStack{
-										Text("0")
-											.font(.largeTitle)
-										Text("+")
-									}
-									.frame(width: 80, height: 80)
-								})
-								Spacer()
-								Button(action: {
-									//play button press sound?
-									dialedNumber = dialedNumber + "#"
-								}, label: {
-									VStack{
-										Text("#")
-											.font(.largeTitle)
-									}
-									.frame(width: 80, height: 80)
-								})
-								Spacer()
-							}
-						}.foregroundColor(Color("ANBlue"))
-						Spacer()
-						
-						Group{
-							HStack{
-								Spacer()
-									.frame(width: 8)
-								Button(action: {
-									//TODO dial out
-								}, label: {
-									HStack{
-										Spacer()
-										Image(systemName: "phone.fill")
-											.resizable()
-											.frame(width: 40, height: 40)
-											.padding(8)
-										Spacer()
-									}
-									.background(Color.green)
-								}).cornerRadius(20)
-								Spacer()
-									.frame(width: 8)
-							}
+								.frame(height: 8)
+							
 						}
-						Spacer()
-							.frame(height: 8)
+						// MARK: Messages Screen
+					case "messages" :
+						Text("Messages aren't setup yet")
+							.onAppear(perform: {
+								menu = "dialpad"
+								NSLog("Menu was set to messages which has not been setup yet, setting it to dialpad")
+						})
+					default :
+						Text("Error!")
+							.onAppear(perform: {
+								menu = "dialpad"
+								NSLog("Menu was set to a wrong value, setting it to dialpad")
+							})
+						}
 					}
-					.background(Color.defaultBackground)
-					.navigationBarTitleDisplayMode(.inline)
-					.toolbar {
-						ToolbarItemGroup(placement: .bottomBar) {
-							Spacer()
-							Button(action: {
-								menu = "history"
-							}, label: {
+				.background(Color.defaultBackground)
+				.navigationBarTitleDisplayMode(.inline)
+				.toolbar {
+					ToolbarItemGroup(placement: .bottomBar) {
+						Spacer()
+						Button(action: {
+							menu = "history"
+						}, label: {
+							if menu == "history" {
+								Image(systemName: "clock.fill")
+							} else {
 								Image(systemName: "clock")
-							});
-							Spacer()
-							Button(action: {
-							}, label: {
-								Image(systemName: "person")
-							})
-							Spacer()
-							Button(action: {
-							}, label: {
-								Image(systemName: "circle.grid.3x3.fill")
-							})
-							Spacer()
-							//							Button(action: {
-							//							}, label: {
-							//								Image(systemName: "text.bubble")
-							//							})
-							//							Spacer()
-							//							Button(action: {
-							//							}, label: {
-							//								Image(systemName: "gearshape")
-							//							})
-							//							Spacer()
-						}
-					}
-					.toolbar {
-						ToolbarItem(placement: .principal) {
-							HStack(spacing: 0) {
-								Button(action: {
-									
-								}, label: {
-									Image(systemName: "gearshape")
-								})
-								Spacer()
-								Text(status)
-									.font(.headline)
-									.foregroundColor(.white)
 							}
+						});
+						Spacer()
+						Button(action: {
+							menu = "contacts"
+						}, label: {
+							if menu == "contacts" {
+								Image(systemName: "person.fill")
+							} else {
+								Image(systemName: "person")
+							}
+						})
+						Spacer()
+						Button(action: {
+							menu = "dialpad"
+						}, label: {
+							if menu == "dialpad" {
+								Image(systemName: "circle.grid.3x3.fill")
+							} else {
+								Image(systemName: "circle.grid.3x3")
+							}
+						})
+						Spacer()
+						//							Button(action: {
+						//							}, label: {
+						//								Image(systemName: "text.bubble")
+						//							})
+						//							Spacer()
+					}
+				}
+				.toolbar {
+					ToolbarItem(placement: .principal) {
+						HStack(spacing: 0) {
+							Button(action: {
+								if menu == "settings" {
+									menu = "dialpad"
+								} else {
+									menu = "settings"
+								}
+							}, label: {
+								if menu == "settings" {
+									Image(systemName: "gearshape.fill")
+								} else {
+									Image(systemName: "gearshape")
+								}
+							})
+							Spacer()
+							Text(status)
+								.font(.headline)
+								.foregroundColor(.white)
 						}
 					}
 				}
 			}
-		// MARK: Messages Screen
-		case "messages" :
-			NavigationView {
-				
-			}
-		default :
-			Text("Error!")
-				.onAppear(perform: {
-					menu = "dialpad"
-					NSLog("Menu was set to a wrong value, setting it to dialpad")
-				})
 		}
+	}
+	func dialPadButton(number: String, t9chars: String?) -> some View {
+		Button(action: {
+			//play button press sound?
+			dialedNumber = dialedNumber + number
+		}, label: {
+			VStack{
+				Text(number)
+					.font(.largeTitle)
+				if t9chars != nil {
+					Text(t9chars!)
+				}
+			}
+			.frame(width: 80, height: 80)
+		})
 	}
 }
 
@@ -488,5 +335,4 @@ struct NormalView_Previews: PreviewProvider {
 		}
 	}
 }
-
 

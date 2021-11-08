@@ -11,7 +11,6 @@ class LinphoneAPI : ObservableObject {
 	var mCore: Core!
 	@Published var coreVersion: String = Core.getVersion
 	private var accounts = [Response.AccountDetails]()
-	@Published private var setupStatus: Bool = false
 	
 	var mRegistrationDelegate : CoreDelegate!
 	
@@ -30,32 +29,33 @@ class LinphoneAPI : ObservableObject {
 		coreVersion = Core.getVersion
 	}
 	public func getAccounts() -> [String] {
-		var result = [String]()
-		for account in accounts {
-			result.append(account.username)
-		}
-		return result
+		return ["account1", "account2"]
+//		var result = [String]()
+//		for account in accounts {
+//			result.append(account.username)
+//		}
+//		return result
 	}
 	// Returns the LinphoneSDK version number
 	public func getVersion() -> String {
 		return coreVersion
 	}
-	public func getSetupStatus() -> Bool {
-		return setupStatus
-	}
 	// Uses a JSON string directly or a URL to grab a JSON string to provision the app, if the app is provisioned already, it will ask to confirm the change
-	func setupAccounts(provisioningData: String) {
+	func setupAccounts(provisioningData: String) -> Bool {
 		
 		if provisioningData.isValidURL {
 			NSLog("Data provided appears to be a valid URL, going to download it now")
 			let url = NSURL(string: provisioningData)
+			var result: Bool = false
 			URLSession.shared.dataTask(with: url! as URL) { data, response, error in
 				let jsonString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)! as String
-				self.parseJSON(jsonString: jsonString)
+				result = self.parseJSON(jsonString: jsonString)
+				return
 			}.resume()
+			return result
 		} else {
 			NSLog("Data provided doesn't not appear to be a URL, lets try it as a JSON object")
-			parseJSON(jsonString: provisioningData)
+			return parseJSON(jsonString: provisioningData)
 		}
 	}
 	func unregister() {
@@ -75,7 +75,7 @@ class LinphoneAPI : ObservableObject {
 		mCore.clearAccounts()
 		mCore.clearAllAuthInfo()
 	}
-	private func parseJSON(jsonString: String) {
+	func parseJSON(jsonString: String)  -> Bool {
 		do {
 			var defaultAccount: Account?
 			let jsonData = try JSONDecoder().decode(Response.self, from: jsonString.data(using: .utf8)!)
@@ -97,10 +97,11 @@ class LinphoneAPI : ObservableObject {
 					defaultAccount = account
 					mCore.defaultAccount = defaultAccount
 				}
-				setupStatus = true
 			}
+			return true
 		} catch {
 			NSLog(error.localizedDescription)
+			return false
 		}
 	}
 }

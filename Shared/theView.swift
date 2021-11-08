@@ -14,15 +14,17 @@ struct theView: View {
 	@State private var provisioningData : String
 	@State private var agreement : Bool
 	@State private var menu: String
+	@State private var firstLaunch: Bool
 	
 	init() {
 		linphone = LinphoneAPI()
 		provisioningData = ""
 		agreement = false
 		menu = "dialpad"
+		firstLaunch = false
 	}
 	var body: some View {
-		if LinphoneAPI().getSetupStatus() {
+		if firstLaunch {
 			NavigationView {
 				ZStack {
 					Color("ANBlue")
@@ -49,8 +51,8 @@ struct theView: View {
 								.keyboardType(.URL).autocapitalization(.none)
 								.disableAutocorrection(.none)
 								.padding()
-							Button(action: { LinphoneAPI()
-									.setupAccounts(provisioningData: provisioningData)
+							Button(action: {
+								firstLaunch = LinphoneAPI().setupAccounts(provisioningData: provisioningData)
 							}, label: {
 								Text("Apply").padding()
 									.background(RoundedRectangle(cornerRadius: 10)
