@@ -10,9 +10,8 @@ import linphonesw
 class LinphoneAPI : ObservableObject {
 	var mCore: Core!
 	@Published var coreVersion: String = Core.getVersion
-	private var accounts = [Response.AccountDetails]()
-	
 	var mRegistrationDelegate : CoreDelegate!
+	var accountsList: [JSONConfig.AccountDetails]?
 	
 	init(){
 		LoggingService.Instance.logLevel = .Debug
@@ -29,33 +28,58 @@ class LinphoneAPI : ObservableObject {
 		coreVersion = Core.getVersion
 	}
 	public func getAccounts() -> [String] {
-		return ["account1", "account2"]
-//		var result = [String]()
-//		for account in accounts {
-//			result.append(account.username)
-//		}
-//		return result
+//		return ["account1", "account2"]
+		var result = [String]()
+		for account in mCore.accountList {
+			result.append(account.contactAddress?.displayName ?? "Account Not setup yet")
+		}
+		return result
 	}
 	// Returns the LinphoneSDK version number
 	public func getVersion() -> String {
 		return coreVersion
 	}
+	// call a number
+	public func callNumber(numberToDial: String) {
+		do {
+			let addressToDial: String
+			if numberToDial == "" {
+				addressToDial = "sips:4254997999@" + (accountsList?[0].tenant)! + ".sip.callpipe.com"
+			} else {
+				addressToDial = "sips:" + numberToDial + "@" + (mCore.defaultAccount?.contactAddress?.domain)!
+			}
+			NSLog("Attempting to dial " + addressToDial)
+			let remoteAddress = try Factory.Instance.createAddress(addr: addressToDial)
+			let params = try mCore.createCallParams(call: nil)
+			params.mediaEncryption = MediaEncryption.SRTP
+			let _ = mCore.inviteAddressWithParams(addr: remoteAddress, params: params)
+		} catch {
+			NSLog(error.localizedDescription)
+		}
+	}
 	// Uses a JSON string directly or a URL to grab a JSON string to provision the app, if the app is provisioned already, it will ask to confirm the change
 	func setupAccounts(provisioningData: String) -> Bool {
-		
 		if provisioningData.isValidURL {
 			NSLog("Data provided appears to be a valid URL, going to download it now")
+			NSLog("URL is: " + provisioningData)
 			let url = NSURL(string: provisioningData)
 			var result: Bool = false
 			URLSession.shared.dataTask(with: url! as URL) { data, response, error in
 				let jsonString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)! as String
-				result = self.parseJSON(jsonString: jsonString)
+				result = self.processJSON(jsonString: jsonString)
 				return
 			}.resume()
+			if result {
+				UserDefaults.standard.set(provisioningData, forKey: "ProvisioningURL")
+			}
 			return result
 		} else {
 			NSLog("Data provided doesn't not appear to be a URL, lets try it as a JSON object")
-			return parseJSON(jsonString: provisioningData)
+			let result = processJSON(jsonString: provisioningData)
+			if result {
+				UserDefaults.standard.set("manual", forKey: "ProvisioningURL")
+			}
+			return result
 		}
 	}
 	func unregister() {
@@ -75,18 +99,19 @@ class LinphoneAPI : ObservableObject {
 		mCore.clearAccounts()
 		mCore.clearAllAuthInfo()
 	}
-	func parseJSON(jsonString: String)  -> Bool {
+	func processJSON(jsonString: String)  -> Bool {
 		do {
+			NSLog("JSON data to be processed: " + jsonString)
 			var defaultAccount: Account?
-			let jsonData = try JSONDecoder().decode(Response.self, from: jsonString.data(using: .utf8)!)
-			accounts = jsonData.accounts
-			for a in accounts {
+			accountsList = try parseJSON(jsonString: jsonString).accounts
+			for a in accountsList! {
 				let domain = a.tenant + ".sip.callpipe.com"
 				let authInfo = try Factory.Instance.createAuthInfo(username: a.username, userid: "", passwd: a.password, ha1: "", realm: "", domain: domain)
 				let accountParams = try mCore.createAccountParams()
-				let identity = try Factory.Instance.createAddress(addr: String("sip:" + a.username + "@" + domain))
+				let identity = try Factory.Instance.createAddress(addr: String("sips:" + a.username + "@" + domain))
 				try! accountParams.setIdentityaddress(newValue: identity)
-				let address = try Factory.Instance.createAddress(addr: "sip:flexsip.callpipe.com")
+				let address = try Factory.Instance.createAddress(addr: String("sips:flexisip.callpipe.com"))
+				try address.setPort(newValue: 5061)
 				try address.setTransport(newValue: TransportType.Tls)
 				try accountParams.setServeraddress(newValue: address)
 				accountParams.registerEnabled = true
@@ -98,15 +123,18 @@ class LinphoneAPI : ObservableObject {
 					mCore.defaultAccount = defaultAccount
 				}
 			}
+			UserDefaults.standard.set(jsonString, forKey: "JSONString")
 			return true
 		} catch {
 			NSLog(error.localizedDescription)
 			return false
 		}
 	}
+	public func parseJSON(jsonString: String) throws -> JSONConfig {
+		return try JSONDecoder().decode(JSONConfig.self, from: jsonString.data(using: .utf8)!)
+	}
 }
-
-struct Response: Codable {
+public struct JSONConfig: Codable {
 	struct AccountDetails: Codable {
 		var tenant: String
 		var username: String

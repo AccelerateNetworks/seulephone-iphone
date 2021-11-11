@@ -13,7 +13,17 @@ var version: String = "0.1"
 struct accelnetApp: App {
 	var body: some Scene {
 		WindowGroup {
-			theView()
+			let linphone: LinphoneAPI = LinphoneAPI()
+			let provisioingURL: String = UserDefaults.standard.string(forKey: "ProvisioningURL") ?? "nil"
+			let jsonString: String = UserDefaults.standard.string(forKey: "JSONString") ?? "nil"
+			if provisioingURL != "nil" {
+				if provisioingURL == "manual" {
+					let _ = linphone.setupAccounts(provisioningData: jsonString)
+				} else {
+					let _ = linphone.setupAccounts(provisioningData: provisioingURL)
+				}
+			}
+			theView(linphoneObject: linphone)
 		}
 	}
 }

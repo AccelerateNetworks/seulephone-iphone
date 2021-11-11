@@ -17,8 +17,6 @@
 		4A5C01F7271F6E0D00B77001 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4A5C01CC271F6E0D00B77001 /* Assets.xcassets */; };
 		4A5C020C271FA5E000B77001 /* LinphoneAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A5C020B271FA5E000B77001 /* LinphoneAPI.swift */; };
 		4A5C020D271FA5E000B77001 /* LinphoneAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A5C020B271FA5E000B77001 /* LinphoneAPI.swift */; };
-		4A5C024827211D2000B77001 /* NormalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A5C024727211D2000B77001 /* NormalView.swift */; };
-		4A5C024927211D2000B77001 /* NormalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A5C024727211D2000B77001 /* NormalView.swift */; };
 		4A7828D22725824D00937386 /* theView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A7828D12725824D00937386 /* theView.swift */; };
 		4A7828D32725824D00937386 /* theView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A7828D12725824D00937386 /* theView.swift */; };
 		F16CFACC55A285F1A9DBF5EE /* Pods_accelnet__iOS_.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB9A2894748CD4A3CDE97D38 /* Pods_accelnet__iOS_.framework */; };
@@ -57,7 +55,6 @@
 		4A5C0206271F80C300B77001 /* accelnet--macOS--Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "accelnet--macOS--Info.plist"; sourceTree = "<group>"; };
 		4A5C0207271F824C00B77001 /* accelnet--iOS--Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "accelnet--iOS--Info.plist"; sourceTree = "<group>"; };
 		4A5C020B271FA5E000B77001 /* LinphoneAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinphoneAPI.swift; sourceTree = "<group>"; };
-		4A5C024727211D2000B77001 /* NormalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NormalView.swift; sourceTree = "<group>"; };
 		4A7828D12725824D00937386 /* theView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = theView.swift; sourceTree = "<group>"; };
 		C58FC3F1C6A5E879D41775D4 /* Pods-accelnet (iOS).release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-accelnet (iOS).release.xcconfig"; path = "Target Support Files/Pods-accelnet (iOS)/Pods-accelnet (iOS).release.xcconfig"; sourceTree = "<group>"; };
 		DB9A2894748CD4A3CDE97D38 /* Pods_accelnet__iOS_.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_accelnet__iOS_.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -117,7 +114,6 @@
 				4A5C01CA271F6E0C00B77001 /* accelnetApp.swift */,
 				4A5C01CC271F6E0D00B77001 /* Assets.xcassets */,
 				4A5C020B271FA5E000B77001 /* LinphoneAPI.swift */,
-				4A5C024727211D2000B77001 /* NormalView.swift */,
 				4A7828D12725824D00937386 /* theView.swift */,
 			);
 			path = Shared;
@@ -382,7 +378,6 @@
 				4A5C01F2271F6E0D00B77001 /* accelnetApp.swift in Sources */,
 				4A7828D22725824D00937386 /* theView.swift in Sources */,
 				4A5C020C271FA5E000B77001 /* LinphoneAPI.swift in Sources */,
-				4A5C024827211D2000B77001 /* NormalView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -393,7 +388,6 @@
 				4A5C01F3271F6E0D00B77001 /* accelnetApp.swift in Sources */,
 				4A7828D32725824D00937386 /* theView.swift in Sources */,
 				4A5C020D271FA5E000B77001 /* LinphoneAPI.swift in Sources */,
-				4A5C024927211D2000B77001 /* NormalView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
