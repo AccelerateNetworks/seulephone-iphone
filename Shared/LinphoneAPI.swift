@@ -46,7 +46,7 @@ class LinphoneAPI : ObservableObject {
 			if numberToDial == "" {
 				addressToDial = "sips:4254997999@" + (accountsList?[0].tenant)! + ".sip.callpipe.com"
 			} else {
-				addressToDial = "sips:" + numberToDial + "@" + (mCore.defaultAccount?.contactAddress?.domain)!
+				addressToDial = "sips:" + numberToDial + "@" + (accountsList?[0].tenant)! + ".sip.callpipe.com"
 			}
 			NSLog("Attempting to dial " + addressToDial)
 			let remoteAddress = try Factory.Instance.createAddress(addr: addressToDial)
