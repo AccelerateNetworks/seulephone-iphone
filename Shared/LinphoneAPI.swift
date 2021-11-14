@@ -10,9 +10,15 @@ import linphonesw
 class LinphoneAPI : ObservableObject {
 	var mCore: Core!
 	@Published var coreVersion: String = Core.getVersion
-	var mRegistrationDelegate : CoreDelegate!
+	var mCoreDelegate : CoreDelegate!
 	var accountsList: [JSONConfig.AccountDetails]?
+	@Published var loggedIn: Bool = false
 	
+	// Outgoing call related variables
+	@Published var callMsg : String = ""
+	@Published var callDestination: String = ""
+	@Published var isCallRunning : Bool = false
+
 	init(){
 		LoggingService.Instance.logLevel = .Debug
 		let factory = Factory.Instance
@@ -20,12 +26,50 @@ class LinphoneAPI : ObservableObject {
 		try! mCore = factory.createCore(configPath: "", factoryConfigPath: "", systemContext: nil)
 		try! mCore.start()
 		
-		
-		mRegistrationDelegate = CoreDelegateStub(onAccountRegistrationStateChanged: { (core: Core, account: Account, state: RegistrationState, message: String) in
+		mCoreDelegate = CoreDelegateStub( onCallStateChanged: { (core: Core, call: Call, state: Call.State, message: String) in
+			// This function will be called each time a call state changes,
+			// which includes new incoming/outgoing calls
+			self.callMsg = message
+			
+			if (state == .OutgoingInit) {
+				// First state an outgoing call will go through
+			} else if (state == .OutgoingProgress) {
+				// Right after outgoing init
+			} else if (state == .OutgoingRinging) {
+				// This state will be reached upon reception of the 180 RINGING
+			} else if (state == .Connected) {
+				// When the 200 OK has been received
+			} else if (state == .StreamsRunning) {
+				// This state indicates the call is active.
+				// You may reach this state multiple times, for example after a pause/resume
+				// or after the ICE negotiation completes
+				// Wait for the call to be connected before allowing a call update
+				self.isCallRunning = true
+				self.callDestination = call.remoteAddress!.username
+			} else if (state == .Paused) {
+				// When you put a call in pause, it will became Paused
+			} else if (state == .PausedByRemote) {
+				// When the remote end of the call pauses it, it will be PausedByRemote
+			} else if (state == .Updating) {
+				// When we request a call update, for example when toggling video
+			} else if (state == .UpdatedByRemote) {
+				// When the remote requests a call update
+			} else if (state == .Released) {
+				// Call state will be released shortly after the End state
+				self.isCallRunning = false
+				self.callDestination = ""
+			} else if (state == .Error) {
+				
+			}
+		}, onAccountRegistrationStateChanged: { (core: Core, account: Account, state: RegistrationState, message: String) in
 			NSLog("New registration state is \(state) for user id \( String(describing: account.params?.identityAddress?.asString()))\n")
+			if (state == .Ok) {
+				self.loggedIn = true
+			} else if (state == .Cleared) {
+				self.loggedIn = false
+			}
 		})
-		mCore.addDelegate(delegate: mRegistrationDelegate)
-		coreVersion = Core.getVersion
+		mCore.addDelegate(delegate: mCoreDelegate)
 	}
 	public func getAccounts() -> [String] {
 //		return ["account1", "account2"]
@@ -90,6 +134,28 @@ class LinphoneAPI : ObservableObject {
 			clonedParams?.registerEnabled = false
 			account.params = clonedParams
 		}
+	}
+	func getTimestamp() -> String {
+		let timeInCall = mCore.currentCall!.duration
+		var timeInCallText: String = ""
+		if timeInCall > 3599 {
+			timeInCallText = String(timeInCall / 3600) + ":"
+		}
+		if (timeInCall % 3600 / 60) < 10 {
+			timeInCallText = timeInCallText + "0" +  String((timeInCall % 3600) / 60) + ":"
+		} else {
+			timeInCallText = timeInCallText + "0" +  String((timeInCall % 3600) / 60) + ":"
+		}
+		if (timeInCall % 60) < 10 {
+			timeInCallText = timeInCallText + "0" + String(timeInCall % 60)
+		} else {
+			timeInCallText = timeInCallText + String(timeInCall % 60)
+		}
+		return timeInCallText
+
+	}
+	func getCallerDestination() -> String {
+		return callDestination
 	}
 	func deleteAll() {
 		let accounts = mCore.accountList
