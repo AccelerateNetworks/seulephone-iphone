@@ -2,7 +2,7 @@ variables:
   archive_scheme: accelnet (iOS)
   archive_path: accelnet.xcarchive
   export_path: accelnet-adhoc-ipa
-  export_options_plist: accelnet-adhoc.plist
+  export_options_plist: accelnet--iOS--Info.plist
 
 job-ios:
 
