@@ -8,12 +8,12 @@
 import SwiftUI
 
 var version: String = "0.1"
+public var linphone: LinphoneAPI = LinphoneAPI()
 
 @main
 struct accelnetApp: App {
 	var body: some Scene {
 		WindowGroup {
-			let linphone: LinphoneAPI = LinphoneAPI()
 			let provisioingURL: String = UserDefaults.standard.string(forKey: "ProvisioningURL") ?? "nil"
 			let jsonString: String = UserDefaults.standard.string(forKey: "JSONString") ?? "nil"
 			if provisioingURL != "nil" {
@@ -23,7 +23,7 @@ struct accelnetApp: App {
 					let _ = linphone.setupAccounts(provisioningData: provisioingURL)
 				}
 			}
-			theView(linphoneObject: linphone)
+			TheView()
 		}
 	}
 }
@@ -46,6 +46,10 @@ extension UIColor {
 	}
 }
 
+// Returns the LinphoneSDK api Interface
+public func getLinphoneAPI() -> LinphoneAPI {
+	return linphone
+}
 extension Color {
 	init(light: Color, dark: Color) {
 		self.init(UIColor(light: UIColor(light), dark: UIColor(dark)))

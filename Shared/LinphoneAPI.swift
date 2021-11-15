@@ -7,7 +7,7 @@
 import Foundation
 import linphonesw
 
-class LinphoneAPI : ObservableObject {
+public class LinphoneAPI : ObservableObject {
 	var mCore: Core!
 	@Published var coreVersion: String = Core.getVersion
 	var mCoreDelegate : CoreDelegate!
@@ -135,7 +135,7 @@ class LinphoneAPI : ObservableObject {
 			account.params = clonedParams
 		}
 	}
-	func getTimestamp() -> String {
+	func getTimeOnCall() -> String {
 		let timeInCall = mCore.currentCall!.duration
 		var timeInCallText: String = ""
 		if timeInCall > 3599 {

@@ -7,22 +7,21 @@
 
 import SwiftUI
 
-struct theView: View {
-	@ObservedObject var linphone : LinphoneAPI
+struct TheView: View {
 	@State private var provisioningData : String
 	@State private var agreement : Bool
 	@State private var menu: String
 	@State var firstLaunch: Bool
-	@State private var status: String = "Status Reporting coming Soon™  ⚪️"
+	@State private var status: String
 	@State var dialedNumber: String = ""
 	@State var provisioningURL: String
 	@State var jsonConfig: JSONConfig
 	
-	init(linphoneObject: LinphoneAPI) {
-		linphone = linphoneObject
+	init() {
 		provisioningData = ""
 		agreement = false
 		menu = "dialpad"
+		status = "Status Reporting coming Soon™  ⚪️"
 		provisioningURL =	UserDefaults.standard.string(forKey: "ProvisioningURL") ?? "nil"
 		do {
 			let jsonString = UserDefaults.standard.string(forKey: "JSONString") ?? "nil"
@@ -461,7 +460,7 @@ struct theView: View {
 struct ContentView_Previews: PreviewProvider {
 	static var previews: some View {
 		if #available(iOS 15.0, *) {
-			theView(linphoneObject: LinphoneAPI())
+			TheView()
 //				.colorScheme(.dark)
 				.previewInterfaceOrientation(.portrait)
 		} else {
