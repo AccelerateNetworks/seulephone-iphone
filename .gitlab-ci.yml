@@ -1,5 +1,5 @@
 variables:
-  archive_scheme: accelnet
+  archive_scheme: accelnet (iOS)
   archive_path: accelnet.xcarchive
   export_path: accelnet-adhoc-ipa
   export_options_plist: accelnet-adhoc.plist
