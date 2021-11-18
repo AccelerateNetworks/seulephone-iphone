@@ -1,4 +1,3 @@
-platform :ios, '11.0'
 source "https://gitlab.linphone.org/BC/public/podspec.git"
 source "https://github.com/CocoaPods/Specs.git"
 
@@ -11,6 +10,13 @@ def basic_pods
 end
 
 target 'accelnet (iOS)' do
+  platform :ios, '11.0'
   use_frameworks!
   basic_pods
 end
+
+#target 'accelnet (macOS)' do
+#  platform :osx, '11.0'
+#  use_frameworks!
+#  basic_pods
+#end
