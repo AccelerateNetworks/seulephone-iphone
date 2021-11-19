@@ -454,7 +454,7 @@ struct TheView: View {
 	}
 	func dialPadButton(number: String, t9chars: String?) -> some View {
 		Button(action: {
-			//play button press sound?
+			linphone.dialTone(tone: number.utf8CString[0])
 			dialedNumber = dialedNumber + number
 		}, label: {
 			VStack{

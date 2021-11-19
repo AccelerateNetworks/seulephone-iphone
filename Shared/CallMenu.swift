@@ -53,6 +53,7 @@ struct CallMenu: View {
 								})
 								Spacer()
 								Button(action: {
+									menu = "numpad"
 								}, label: {
 									VStack{
 										Image(systemName: "circle.grid.3x3.fill")
@@ -135,6 +136,99 @@ struct CallMenu: View {
 					}
 				}.foregroundColor(.white)
 			}
+			// MARK: DialPad Number
+		case "numpad" :
+			ZStack {
+				Color("ANBlue")
+					.ignoresSafeArea(edges: .all)
+				VStack{
+					Text(PartialFormatter().formatPartial(linphone.callDestination))
+						.font(.title)
+					Text(timeStamp)
+						.onReceive(timer) { input in
+							timeStamp = linphone.getTimeOnCall()
+						}
+					Spacer()
+					Group {
+						HStack {
+							Spacer()
+							numpadButton(number: "1", t9chars: "")
+							Spacer()
+							numpadButton(number: "2", t9chars: "ABC")
+							Spacer()
+							numpadButton(number: "3", t9chars: "DEF")
+							Spacer()
+						}
+						Spacer()
+						HStack {
+							Spacer()
+							numpadButton(number: "4", t9chars: "GHI")
+							Spacer()
+							numpadButton(number: "5", t9chars: "JKI")
+							Spacer()
+							numpadButton(number: "6", t9chars: "MNO")
+							Spacer()
+						}
+						Spacer()
+						HStack {
+							Spacer()
+							numpadButton(number: "7", t9chars: "PQRS")
+							Spacer()
+							numpadButton(number: "8", t9chars: "TUV")
+							Spacer()
+							numpadButton(number: "9", t9chars: "WXYZ")
+							Spacer()
+						}
+
+						Spacer()
+						HStack {
+							Spacer()
+							numpadButton(number: "*", t9chars: nil)
+							Spacer()
+							numpadButton(number: "0", t9chars: "+")
+							Spacer()
+							numpadButton(number: "#", t9chars: nil)
+							Spacer()
+						}
+						Spacer()
+					}
+					
+					HStack {
+						Spacer()
+						VStack {
+							Text("")
+								.frame(width: 100, height: 100)
+						}
+						Spacer()
+						Button(action: {
+							linphone.hangUp()
+						}, label: {
+							VStack{
+								Image(systemName: "phone.down.fill")
+									.resizable()
+									.frame(width: 100, height: 50)
+									.foregroundColor(.red)
+								Text("Hang Up")
+							}
+							.frame(width: 100, height: 100)
+						})
+						Spacer()
+						Button(action: {
+							menu = "main"
+						}, label: {
+							VStack{
+								Image(systemName: "circle.grid.3x3.fill")
+									.resizable()
+									.frame(width: 50, height: 50)
+								Text("Hide")
+							}
+							.frame(width: 100, height: 100)
+						})
+						Spacer()
+					}
+				}
+				.foregroundColor(.white)
+			}
 		default :
 			Text("Error!")
 				.onAppear(perform: {
@@ -143,8 +237,9 @@ struct CallMenu: View {
 				})
 		}
 	}
-	func dialPadButton(number: String, t9chars: String?) -> some View {
+	func numpadButton(number: String, t9chars: String?) -> some View {
 		Button(action: {
+			linphone.dialToneInCall(tone: number.utf8CString[0])
 		}, label: {
 			VStack{
 				Text(number)
@@ -153,7 +248,7 @@ struct CallMenu: View {
 					Text(t9chars!)
 				}
 			}
-			.frame(width: 100, height: 100)
+			.frame(width: 80, height: 80)
 		})
 	}
 }
@@ -161,6 +256,7 @@ struct CallMenu: View {
 
 struct CallMenu_Previews: PreviewProvider {
 	static var previews: some View {
+		let _ = getVersion()
 		Group{
 			CallMenu()
 				.previewDevice(PreviewDevice(rawValue: "iPhone 13 mini"))

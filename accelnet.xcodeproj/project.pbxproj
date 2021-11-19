@@ -569,7 +569,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.1;
+				MARKETING_VERSION = 0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.acceleratenetwork.AccelNet;
 				PRODUCT_NAME = AccelNet;
 				SDKROOT = iphoneos;
@@ -606,7 +606,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.1;
+				MARKETING_VERSION = 0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.acceleratenetwork.AccelNet;
 				PRODUCT_NAME = AccelNet;
 				SDKROOT = iphoneos;

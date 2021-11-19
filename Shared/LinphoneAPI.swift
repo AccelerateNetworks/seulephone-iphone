@@ -40,6 +40,7 @@ public class LinphoneAPI : ObservableObject {
 			
 			if (state == .OutgoingInit) {
 				self.callStateText = "Initializing."
+				self.callDestination = call.remoteAddress!.username
 				self.isCallActive = true
 				// First state an outgoing call will go through
 			} else if (state == .OutgoingProgress) {
@@ -147,6 +148,16 @@ public class LinphoneAPI : ObservableObject {
 			}
 			return result
 		}
+	}
+	// Sends DTMF in call
+	func dialToneInCall(tone: CChar) {
+		do {
+			try! mCore.currentCall!.sendDtmf(dtmf: tone)
+		}
+	}
+	// Sends DTMF Sound locally
+	func dialTone(tone: CChar) {
+		mCore.playDtmf(dtmf: tone, durationMs: 100)
 	}
 	func unregister() {
 		let accounts = mCore.accountList
