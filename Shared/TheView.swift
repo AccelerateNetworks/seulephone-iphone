@@ -6,8 +6,10 @@
 //
 
 import SwiftUI
+import PhoneNumberKit
 
 struct TheView: View {
+	@ObservedObject var linphone = getLinphoneAPI()
 	@State private var provisioningData : String
 	@State private var agreement : Bool
 	@State private var menu: String
@@ -34,8 +36,8 @@ struct TheView: View {
 	}
 	var body: some View {
 		if !firstLaunch {
-			if linphone.isCallRunning {
-				Text("")
+			if linphone.isCallActive {
+				CallMenu()
 			} else {
 				NavigationView {
 					ZStack {
@@ -56,8 +58,10 @@ struct TheView: View {
 								}, label: {
 									if menu == "history" {
 										Image(systemName: "clock.fill")
+											.foregroundColor(.white)
 									} else {
 										Image(systemName: "clock")
+											.foregroundColor(.white)
 									}
 								});
 								Spacer()
@@ -66,8 +70,10 @@ struct TheView: View {
 								}, label: {
 									if menu == "contacts" {
 										Image(systemName: "person.fill")
+											.foregroundColor(.white)
 									} else {
 										Image(systemName: "person")
+											.foregroundColor(.white)
 									}
 								})
 								Spacer()
@@ -76,8 +82,10 @@ struct TheView: View {
 								}, label: {
 									if menu == "dialpad" {
 										Image(systemName: "circle.grid.3x3.fill")
+											.foregroundColor(.white)
 									} else {
 										Image(systemName: "circle.grid.3x3")
+											.foregroundColor(.white)
 									}
 								})
 								Spacer()
@@ -100,8 +108,10 @@ struct TheView: View {
 									}, label: {
 										if menu == "settings" {
 											Image(systemName: "gearshape.fill")
+												.foregroundColor(.white)
 										} else {
 											Image(systemName: "gearshape")
+												.foregroundColor(.white)
 										}
 									})
 									Spacer()
@@ -218,12 +228,11 @@ struct TheView: View {
 											//								}, label: {
 											//									Image(systemName: "arrow.right.doc.on.clipboard")
 											//								})
-											Text("<425-499-7999>")
-												.foregroundColor(.white)
+											Text("1(425) 499-7999")
+												.foregroundColor(.gray)
 										} else {
-											Text(dialedNumber)
-												.foregroundColor(.defaultForeground)
-											
+											Text(PartialFormatter().formatPartial(dialedNumber))
+												.foregroundColor(.white)
 										}
 										Spacer()
 										Button(action: {
@@ -248,6 +257,7 @@ struct TheView: View {
 													Image(systemName: "recordingtape")
 												}
 												.frame(width: 80, height: 80)
+												.foregroundColor(.init(light: Color("ANBlue"), dark: .white))
 											})
 											Spacer()
 											dialPadButton(number: "2", t9chars: "ABC")
@@ -286,6 +296,7 @@ struct TheView: View {
 													Image(systemName: "staroflife.fill")
 												}
 												.frame(width: 80, height: 80)
+												.foregroundColor(.init(light: Color("ANBlue"), dark: .white))
 											})
 											Spacer()
 											dialPadButton(number: "0", t9chars: "+")
@@ -309,6 +320,7 @@ struct TheView: View {
 														.resizable()
 														.frame(width: 40, height: 40)
 														.padding(8)
+														.foregroundColor(.white)
 													Spacer()
 												}
 												.background(Color.green)
@@ -453,6 +465,7 @@ struct TheView: View {
 				}
 			}
 			.frame(width: 80, height: 80)
+			.foregroundColor(.init(light: Color("ANBlue"), dark: .white))
 		})
 	}
 }

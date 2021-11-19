@@ -6,11 +6,15 @@
 //
 
 import SwiftUI
+import PhoneNumberKit
 
 struct CallMenu: View {
+	@ObservedObject var linphone = getLinphoneAPI()
 	@State var menu: String
+	@State var timeStamp: String = "Initializing"
+	let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
 	var dialedNumbers: String = ""
-	var speaker: String = "speaker"
+	
 	init() {
 		menu = "main"
 	}
@@ -22,9 +26,12 @@ struct CallMenu: View {
 				Color("ANBlue")
 					.ignoresSafeArea(edges: .all)
 				VStack{
-					Text("4254997999")
+					Text(PartialFormatter().formatPartial(linphone.callDestination))
 						.font(.title)
-					Text(getLinphoneAPI().getTimeOnCall())
+					Text(timeStamp)
+						.onReceive(timer) { input in
+							timeStamp = linphone.getTimeOnCall()
+						}
 					Spacer()
 					Group {
 						Text(dialedNumbers)
@@ -34,9 +41,10 @@ struct CallMenu: View {
 							HStack{
 								Spacer()
 								Button(action: {
+									linphone.toggleMic()
 								}, label: {
 									VStack{
-										Image(systemName: "mic.fill")
+										Image(systemName: !linphone.isMicrophoneEnabled ? "mic.fill" : "mic.slash")
 											.resizable()
 											.frame(width: 35, height: 50)
 										Text("Mute")
@@ -56,9 +64,10 @@ struct CallMenu: View {
 								})
 								Spacer()
 								Button(action: {
+									linphone.toggleSpeaker()
 								}, label: {
 									VStack{
-										Image(systemName: "speaker")
+										Image(systemName: linphone.isSpeakerEnabled ?  "speaker.fill" : "speaker")
 											.resizable()
 											.frame(width: 35, height: 50)
 										Text("Speaker")
@@ -112,6 +121,7 @@ struct CallMenu: View {
 							Spacer()
 						}
 						Button(action: {
+							linphone.hangUp()
 						}, label: {
 							VStack{
 								Image(systemName: "phone.down.fill")

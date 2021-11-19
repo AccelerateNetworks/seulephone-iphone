@@ -16,8 +16,15 @@ public class LinphoneAPI : ObservableObject {
 	
 	// Outgoing call related variables
 	@Published var callMsg : String = ""
-	@Published var callDestination: String = ""
+	@Published var isCallIncoming : Bool = false
+	@Published var callDestination : String = ""
+	@Published var callStateText : String = "Not Logged In Yet...."
 	@Published var isCallRunning : Bool = false
+	@Published var isCallActive : Bool = false
+	@Published var isSpeakerEnabled : Bool = false
+	@Published var isMicrophoneEnabled : Bool = false
+	@Published var callStartTime : Date = Date()
+
 
 	init(){
 		LoggingService.Instance.logLevel = .Debug
@@ -32,33 +39,48 @@ public class LinphoneAPI : ObservableObject {
 			self.callMsg = message
 			
 			if (state == .OutgoingInit) {
+				self.callStateText = "Initializing."
+				self.isCallActive = true
 				// First state an outgoing call will go through
 			} else if (state == .OutgoingProgress) {
 				// Right after outgoing init
+				self.callStateText = "Initializing.."
 			} else if (state == .OutgoingRinging) {
 				// This state will be reached upon reception of the 180 RINGING
+				self.callStateText = "Ringing..."
 			} else if (state == .Connected) {
 				// When the 200 OK has been received
+				self.callStateText = "Connected"
 			} else if (state == .StreamsRunning) {
 				// This state indicates the call is active.
 				// You may reach this state multiple times, for example after a pause/resume
 				// or after the ICE negotiation completes
 				// Wait for the call to be connected before allowing a call update
+				self.callStateText = "In call"
+				self.callStartTime = Date()
 				self.isCallRunning = true
 				self.callDestination = call.remoteAddress!.username
 			} else if (state == .Paused) {
 				// When you put a call in pause, it will became Paused
+				self.callStateText = "Paused"
 			} else if (state == .PausedByRemote) {
 				// When the remote end of the call pauses it, it will be PausedByRemote
+				self.callStateText = "Paused"
 			} else if (state == .Updating) {
 				// When we request a call update, for example when toggling video
+				self.callStateText = "Updating"
 			} else if (state == .UpdatedByRemote) {
 				// When the remote requests a call update
+				self.callStateText = "Updating"
 			} else if (state == .Released) {
 				// Call state will be released shortly after the End state
+				self.callStateText = "Initializing"
 				self.isCallRunning = false
 				self.callDestination = ""
+				self.isCallActive = false
 			} else if (state == .Error) {
+				self.isCallRunning = false
+				self.callDestination = ""
 				
 			}
 		}, onAccountRegistrationStateChanged: { (core: Core, account: Account, state: RegistrationState, message: String) in
@@ -78,7 +100,7 @@ public class LinphoneAPI : ObservableObject {
 			result.append(account.contactAddress?.displayName ?? "Account Not setup yet")
 		}
 		return result
-	}
+	}	
 	// Returns the LinphoneSDK version number
 	public func getVersion() -> String {
 		return coreVersion
@@ -136,7 +158,10 @@ public class LinphoneAPI : ObservableObject {
 		}
 	}
 	func getTimeOnCall() -> String {
-		let timeInCall = mCore.currentCall!.duration
+		if isCallActive && !isCallRunning{
+			return callStateText
+		}
+		let timeInCall = Int (abs(callStartTime.timeIntervalSinceNow))
 		var timeInCallText: String = ""
 		if timeInCall > 3599 {
 			timeInCallText = String(timeInCall / 3600) + ":"
@@ -156,6 +181,42 @@ public class LinphoneAPI : ObservableObject {
 	}
 	func getCallerDestination() -> String {
 		return callDestination
+	}
+	func hangUp() {
+		try! mCore.currentCall?.terminate()
+	}
+	func toggleSpeaker() {
+		// Get the currently used audio device
+		let currentAudioDevice = mCore.currentCall?.outputAudioDevice
+		let speakerEnabled = currentAudioDevice?.type == AudioDeviceType.Speaker
+		
+//		let test = currentAudioDevice?.deviceName
+		// We can get a list of all available audio devices using
+		// Note that on tablets for example, there may be no Earpiece device
+		for audioDevice in mCore.audioDevices {
+			
+			// For IOS, the Speaker is an exception, Linphone cannot differentiate Input and Output.
+			// This means that the default output device, the earpiece, is paired with the default phone microphone.
+			// Setting the output audio device to the microphone will redirect the sound to the earpiece.
+			if (speakerEnabled && audioDevice.type == AudioDeviceType.Microphone) {
+				mCore.currentCall?.outputAudioDevice = audioDevice
+				isSpeakerEnabled = false
+				return
+			} else if (!speakerEnabled && audioDevice.type == AudioDeviceType.Speaker) {
+				mCore.currentCall?.outputAudioDevice = audioDevice
+				isSpeakerEnabled = true
+				return
+			}
+			/* If we wanted to route the audio to a bluetooth headset
+			 else if (audioDevice.type == AudioDevice.Type.Bluetooth) {
+			 core.currentCall?.outputAudioDevice = audioDevice
+			 }*/
+		}
+
+	}
+	func toggleMic() {
+		mCore.micEnabled = !mCore.micEnabled
+		isMicrophoneEnabled = !isMicrophoneEnabled
 	}
 	func deleteAll() {
 		let accounts = mCore.accountList
