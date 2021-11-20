@@ -11,7 +11,7 @@ public class LinphoneAPI : ObservableObject {
 	var mCore: Core!
 	@Published var coreVersion: String = Core.getVersion
 	var mCoreDelegate : CoreDelegate!
-	var accountsList: [JSONConfig.AccountDetails]?
+	var accountsList: [AccountDetails]?
 	@Published var loggedIn: Bool = false
 	
 	// Outgoing call related variables
@@ -229,6 +229,9 @@ public class LinphoneAPI : ObservableObject {
 		mCore.micEnabled = !mCore.micEnabled
 		isMicrophoneEnabled = !isMicrophoneEnabled
 	}
+	func toggleHold() {
+		//mCore.currentCall
+	}
 	func deleteAll() {
 		let accounts = mCore.accountList
 		for account in accounts {
@@ -263,22 +266,34 @@ public class LinphoneAPI : ObservableObject {
 			}
 			UserDefaults.standard.set(jsonString, forKey: "JSONString")
 			return true
+		} catch let DecodingError.dataCorrupted(context) {
+			print(context)
+		} catch let DecodingError.keyNotFound(key, context) {
+			print("Key '\(key)' not found:", context.debugDescription)
+			print("codingPath:", context.codingPath)
+		} catch let DecodingError.valueNotFound(value, context) {
+			print("Value '\(value)' not found:", context.debugDescription)
+			print("codingPath:", context.codingPath)
+		} catch let DecodingError.typeMismatch(type, context)  {
+			print("Type '\(type)' mismatch:", context.debugDescription)
+			print("codingPath:", context.codingPath)
 		} catch {
-			NSLog(error.localizedDescription)
-			return false
+			print("error: ", error)
 		}
+		return false
 	}
 	public func parseJSON(jsonString: String) throws -> JSONConfig {
 		return try JSONDecoder().decode(JSONConfig.self, from: jsonString.data(using: .utf8)!)
 	}
 }
 public struct JSONConfig: Codable {
-	struct AccountDetails: Codable {
-		var tenant: String
-		var username: String
-		var password: String
-	}
 	var accounts: [AccountDetails]
+}
+public struct AccountDetails: Codable {
+	var tenant, username, password: String
+//	var tenant: String
+//	var username: String
+//	var password: String
 }
 
 

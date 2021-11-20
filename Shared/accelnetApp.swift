@@ -7,30 +7,32 @@
 
 import SwiftUI
 
-var version: String = "0.1"
 public var linphone: LinphoneAPI = LinphoneAPI()
 
 @main
 struct accelnetApp: App {
+	init() {
+		let provisioingURL: String = UserDefaults.standard.string(forKey: "ProvisioningURL") ?? "nil"
+		let jsonString: String = UserDefaults.standard.string(forKey: "JSONString") ?? "nil"
+		if provisioingURL != "nil" {
+			if provisioingURL == "manual" {
+				let _ = linphone.setupAccounts(provisioningData: jsonString)
+			} else {
+				let _ = linphone.setupAccounts(provisioningData: provisioingURL)
+			}
+		}
+	}
 	var body: some Scene {
 		WindowGroup {
-			let provisioingURL: String = UserDefaults.standard.string(forKey: "ProvisioningURL") ?? "nil"
-			let jsonString: String = UserDefaults.standard.string(forKey: "JSONString") ?? "nil"
-			if provisioingURL != "nil" {
-				if provisioingURL == "manual" {
-					let _ = linphone.setupAccounts(provisioningData: jsonString)
-				} else {
-					let _ = linphone.setupAccounts(provisioningData: provisioingURL)
-				}
-			}
 			TheView()
 		}
 	}
 }
-// Returns an array with [(Version of the app), (Version of the SDK)]
+// Returns the version of the app
 public func getVersion() -> String {
-	return version
+	return Bundle.main.releaseVersionNumberPretty
 }
+
 extension UIColor {
 	convenience init(light: UIColor, dark: UIColor) {
 		self.init { traitCollection in
@@ -50,6 +52,7 @@ extension UIColor {
 public func getLinphoneAPI() -> LinphoneAPI {
 	return linphone
 }
+
 extension Color {
 	init(light: Color, dark: Color) {
 		self.init(UIColor(light: UIColor(light), dark: UIColor(dark)))
@@ -69,6 +72,7 @@ extension String {
 		}
 	}
 }
+
 // From https://stackoverflow.com/questions/56505528/swiftui-update-navigation-bar-title-color
 struct NavigationConfigurator: UIViewControllerRepresentable {
 	var configure: (UINavigationController) -> Void = { _ in }
@@ -81,5 +85,34 @@ struct NavigationConfigurator: UIViewControllerRepresentable {
 			self.configure(nc)
 		}
 	}
+}
+
+extension Bundle {
+	var releaseVersionNumber: String? {
+		return infoDictionary?["CFBundleShortVersionString"] as? String
+	}
+	var buildVersionNumber: String? {
+		return infoDictionary?["CFBundleVersion"] as? String
+	}
+	var releaseVersionNumberPretty: String {
+		return "v\(releaseVersionNumber ?? "1.0.0")"
+	}
+}
+
+struct DeviceRotationViewModifier: ViewModifier {
+	let action: (UIDeviceOrientation) -> Void
 	
+	func body(content: Content) -> some View {
+		content
+			.onAppear()
+			.onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
+				action(UIDevice.current.orientation)
+			}
+	}
+}
+
+extension View {
+	func onRotate(perform action: @escaping (UIDeviceOrientation) -> Void) -> some View {
+		self.modifier(DeviceRotationViewModifier(action: action))
+	}
 }
