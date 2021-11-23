@@ -20,6 +20,9 @@ struct TheView: View {
 	@State var dialedNumber: String = ""
 	@State var provisioningURL: String
 	@State var jsonConfig: JSONConfig
+	@State private var showingDeleteSettings = false
+	@State private var showingErrorMessage = false
+	@State private var errorMessage: String = "There was an unexpected error, if this happens again please considering sending logs"
 	
 	init() {
 		provisioningData = ""
@@ -165,23 +168,35 @@ struct TheView: View {
 																}
 															}
 														}
-														if !wasThereAccounts {
+														if wasThereAccounts {
 															HStack {
 																Spacer()
 																Text("no accounts...")
 																Spacer()
 															}
 														}
-														
-														Button(action: {
-															
-														}, label: {
-															HStack {
-																Spacer()
-																Text("Resetup")
-																Spacer()
+														HStack {
+															Spacer()
+															Button("Erase all UserData") {
+																showingDeleteSettings = true
 															}
-														})
+															.alert(isPresented: $showingDeleteSettings) {
+																Alert(
+																	title: Text("Are you sure?"),
+																	message: Text("Continuing will erase all saved data including: \n-Call History\n-Settings\n-Provisioning data"),
+																	primaryButton: .destructive(Text("Remove all userdata")) {
+																		//TODO Clear all userdata as well
+																		NSLog("")
+																		NSLog("  User pressed the distruct button!!!!")
+																		NSLog("")
+																		linphone.deleteAll()
+																	},
+																	secondaryButton: .cancel()
+																)
+																
+															}
+															Spacer()
+														}
 													}
 												}
 												NavigationLink(destination: {
@@ -315,7 +330,7 @@ struct TheView: View {
 												Spacer()
 													.frame(width: 8)
 												Button(action: {
-													linphone.callNumber(numberToDial: dialedNumber)
+													showingErrorMessage = !linphone.callNumber(numberToDial: dialedNumber)
 												}, label: {
 													HStack{
 														Spacer()
@@ -328,13 +343,18 @@ struct TheView: View {
 													}
 													.background(Color.green)
 												}).cornerRadius(20)
+													.alert(isPresented: $showingErrorMessage) {
+														Alert(
+															title: Text("Error"),
+															message: Text(errorMessage)
+														)
+													}
 												Spacer()
 													.frame(width: 8)
 											}
 										}
 										Spacer()
 											.frame(height: 8)
-										
 									}
 									// MARK: Messages Screen
 								case "messages" :
@@ -433,8 +453,6 @@ struct TheView: View {
 											}
 										}
 									}
-									
-									
 								}.background(Color.defaultBackground)
 							})
 							{

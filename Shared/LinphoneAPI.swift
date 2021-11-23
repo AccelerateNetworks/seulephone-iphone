@@ -5,7 +5,10 @@
 //  Created by piajesse on 10/19/21.
 //
 import Foundation
+import Alamofire
 import linphonesw
+import CallKit
+
 
 public class LinphoneAPI : ObservableObject {
 	var mCore: Core!
@@ -21,9 +24,12 @@ public class LinphoneAPI : ObservableObject {
 	@Published var callStateText : String = "Not Logged In Yet...."
 	@Published var isCallRunning : Bool = false
 	@Published var isCallActive : Bool = false
+	@Published var isCallPaused: Bool = false
 	@Published var isSpeakerEnabled : Bool = false
 	@Published var isMicrophoneEnabled : Bool = false
 	@Published var callStartTime : Date = Date()
+	@Published var currentCall : Call?
+	@Published var conference : Conference? = nil
 
 
 	init(){
@@ -42,6 +48,7 @@ public class LinphoneAPI : ObservableObject {
 				self.callStateText = "Initializing."
 				self.callDestination = call.remoteAddress!.username
 				self.isCallActive = true
+				self.currentCall = call
 				// First state an outgoing call will go through
 			} else if (state == .OutgoingProgress) {
 				// Right after outgoing init
@@ -60,10 +67,12 @@ public class LinphoneAPI : ObservableObject {
 				self.callStateText = "In call"
 				self.callStartTime = Date()
 				self.isCallRunning = true
+				self.isCallPaused = false
 				self.callDestination = call.remoteAddress!.username
 			} else if (state == .Paused) {
 				// When you put a call in pause, it will became Paused
 				self.callStateText = "Paused"
+				self.isCallPaused = true
 			} else if (state == .PausedByRemote) {
 				// When the remote end of the call pauses it, it will be PausedByRemote
 				self.callStateText = "Paused"
@@ -76,12 +85,18 @@ public class LinphoneAPI : ObservableObject {
 			} else if (state == .Released) {
 				// Call state will be released shortly after the End state
 				self.callStateText = "Initializing"
+				self.isCallPaused = false
 				self.isCallRunning = false
 				self.callDestination = ""
 				self.isCallActive = false
+				self.currentCall = nil
+				self.conference = nil
 			} else if (state == .Error) {
+				self.isCallPaused = false
 				self.isCallRunning = false
 				self.callDestination = ""
+				self.currentCall = nil
+				self.conference = nil
 				
 			}
 		}, onAccountRegistrationStateChanged: { (core: Core, account: Account, state: RegistrationState, message: String) in
@@ -106,9 +121,13 @@ public class LinphoneAPI : ObservableObject {
 	public func getVersion() -> String {
 		return coreVersion
 	}
-	// call a number
-	public func callNumber(numberToDial: String) {
+	// call a number, returns true if the call worked
+	public func callNumber(numberToDial: String) -> Bool {
 		do {
+			if accountsList == nil {
+				NSLog("There appears to be no accounts, but the user was able to get past first launch, and tried to call")
+				return false
+			}
 			let addressToDial: String
 			if numberToDial == "" {
 				addressToDial = "sips:4254997999@" + (accountsList?[0].tenant)! + ".sip.callpipe.com"
@@ -120,8 +139,10 @@ public class LinphoneAPI : ObservableObject {
 			let params = try mCore.createCallParams(call: nil)
 			params.mediaEncryption = MediaEncryption.SRTP
 			let _ = mCore.inviteAddressWithParams(addr: remoteAddress, params: params)
+			return true
 		} catch {
 			NSLog(error.localizedDescription)
+			return false
 		}
 	}
 	// Uses a JSON string directly or a URL to grab a JSON string to provision the app, if the app is provisioned already, it will ask to confirm the change
@@ -131,14 +152,14 @@ public class LinphoneAPI : ObservableObject {
 			NSLog("URL is: " + provisioningData)
 			let url = NSURL(string: provisioningData)
 			var result: Bool = false
-			URLSession.shared.dataTask(with: url! as URL) { data, response, error in
+				URLSession.shared.dataTask(with: url! as URL) { data, response, error in
 				let jsonString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)! as String
 				result = self.processJSON(jsonString: jsonString)
+				if result {
+					UserDefaults.standard.set(provisioningData, forKey: "ProvisioningURL")
+				}
 				return
 			}.resume()
-			if result {
-				UserDefaults.standard.set(provisioningData, forKey: "ProvisioningURL")
-			}
 			return result
 		} else {
 			NSLog("Data provided doesn't not appear to be a URL, lets try it as a JSON object")
@@ -152,7 +173,7 @@ public class LinphoneAPI : ObservableObject {
 	// Sends DTMF in call
 	func dialToneInCall(tone: CChar) {
 		do {
-			try! mCore.currentCall!.sendDtmf(dtmf: tone)
+			try! currentCall!.sendDtmf(dtmf: tone)
 		}
 	}
 	// Sends DTMF Sound locally
@@ -188,17 +209,16 @@ public class LinphoneAPI : ObservableObject {
 			timeInCallText = timeInCallText + String(timeInCall % 60)
 		}
 		return timeInCallText
-
 	}
 	func getCallerDestination() -> String {
 		return callDestination
 	}
 	func hangUp() {
-		try! mCore.currentCall?.terminate()
+		try! currentCall?.terminate()
 	}
 	func toggleSpeaker() {
 		// Get the currently used audio device
-		let currentAudioDevice = mCore.currentCall?.outputAudioDevice
+		let currentAudioDevice = currentCall?.outputAudioDevice
 		let speakerEnabled = currentAudioDevice?.type == AudioDeviceType.Speaker
 		
 //		let test = currentAudioDevice?.deviceName
@@ -210,11 +230,11 @@ public class LinphoneAPI : ObservableObject {
 			// This means that the default output device, the earpiece, is paired with the default phone microphone.
 			// Setting the output audio device to the microphone will redirect the sound to the earpiece.
 			if (speakerEnabled && audioDevice.type == AudioDeviceType.Microphone) {
-				mCore.currentCall?.outputAudioDevice = audioDevice
+				currentCall?.outputAudioDevice = audioDevice
 				isSpeakerEnabled = false
 				return
 			} else if (!speakerEnabled && audioDevice.type == AudioDeviceType.Speaker) {
-				mCore.currentCall?.outputAudioDevice = audioDevice
+				currentCall?.outputAudioDevice = audioDevice
 				isSpeakerEnabled = true
 				return
 			}
@@ -225,23 +245,58 @@ public class LinphoneAPI : ObservableObject {
 		}
 
 	}
+	func conferenceDial(destination: String) {
+		if (conference == nil) {
+			guard let cp = try? mCore.createConferenceParams() else {
+				NSLog("Unable to create conference parameters")
+				return
+			}
+			if let currentParams = currentCall?.currentParams  {
+				cp.videoEnabled = currentParams.videoEnabled
+			}
+			conference = try? mCore.createConferenceWithParams(params: cp)
+		}
+		mCore.calls.forEach { call in
+			if (call.conference == nil || call.conference?.participantCount == 1) {
+				try? conference?.addParticipant(call: call)
+			}
+		}
+	}
+	func transferCall(destination: String) {
+		do {
+			let remoteAddress = try! Factory.Instance.createAddress(addr: "sips:" + destination + "@" + (accountsList?[0].tenant)! + ".sip.callpipe.com")
+			try! currentCall?.transferTo(referTo: remoteAddress)
+		}
+	}
 	func toggleMic() {
 		mCore.micEnabled = !mCore.micEnabled
 		isMicrophoneEnabled = !isMicrophoneEnabled
 	}
 	func toggleHold() {
-		//mCore.currentCall
+		do {
+			if isCallPaused {
+				try! currentCall?.resume()
+			} else {
+				try! currentCall?.pause()
+			}
+		}
 	}
 	func deleteAll() {
+		hangUp()
 		let accounts = mCore.accountList
 		for account in accounts {
 			mCore.removeAccount(account: account)
 		}
 		mCore.clearAccounts()
 		mCore.clearAllAuthInfo()
+		UserDefaults.standard.set(nil, forKey: "JSONString")
+		UserDefaults.standard.set(nil, forKey: "ProvisioningURL")
+		NSLog("Killing app so user can reenter details on startup")
+		exit(0)
 	}
 	func processJSON(jsonString: String)  -> Bool {
 		do {
+			var result = false
 			NSLog("JSON data to be processed: " + jsonString)
 			var defaultAccount: Account?
 			accountsList = try parseJSON(jsonString: jsonString).accounts
@@ -259,13 +314,16 @@ public class LinphoneAPI : ObservableObject {
 				let account = try mCore.createAccount(params: accountParams)
 				mCore.addAuthInfo(info: authInfo)
 				try mCore.addAccount(account: account)
-				if defaultAccount == nil {
-					defaultAccount = account
-					mCore.defaultAccount = defaultAccount
+				if account.params!.registerEnabled {
+					result = true
+					if defaultAccount == nil {
+						defaultAccount = account
+						mCore.defaultAccount = defaultAccount
+					}
 				}
 			}
 			UserDefaults.standard.set(jsonString, forKey: "JSONString")
-			return true
+			return result
 		} catch let DecodingError.dataCorrupted(context) {
 			print(context)
 		} catch let DecodingError.keyNotFound(key, context) {
@@ -291,9 +349,6 @@ public struct JSONConfig: Codable {
 }
 public struct AccountDetails: Codable {
 	var tenant, username, password: String
-//	var tenant: String
-//	var username: String
-//	var password: String
 }
 
 

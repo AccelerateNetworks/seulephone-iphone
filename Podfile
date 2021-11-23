@@ -12,6 +12,7 @@ end
 target 'accelnet (iOS)' do
   platform :ios, '11.0'
   pod 'PhoneNumberKit', '~> 3.3'
+  pod 'Alamofire', '~> 5.4'
   use_frameworks!
   basic_pods
 end

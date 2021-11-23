@@ -7,13 +7,15 @@
 
 import SwiftUI
 import PhoneNumberKit
+import Alamofire
 
 struct CallMenu: View {
 	@ObservedObject var linphone = getLinphoneAPI()
+	let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
 	@State var menu: String
 	@State var timeStamp: String = "Initializing"
-	let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
-	var dialedNumbers: String = ""
+	@State var dialedNumbers: String = ""
+	@State var displayData: String = ""
 	
 	init() {
 		menu = "main"
@@ -83,16 +85,17 @@ struct CallMenu: View {
 									linphone.toggleHold()
 								}, label: {
 									VStack{
-										Image(systemName: "pause")
+										Image(systemName: linphone.isCallPaused ? "play.fill" : "pause")
 											.resizable()
-											.frame(width: 25, height: 50)
-										Text("Hold")
+											.frame(width: linphone.isCallPaused ? 50 : 25, height: 50)
+										Text(linphone.isCallPaused ? "Resume" : "Hold")
 									}
 									.frame(width: 100, height: 100)
 								})
 								Spacer()
 								Button(action: {
-									menu = "conference"
+									//TODO figure out why conference bugs the hell out
+//									menu = "conference"
 								}, label: {
 									VStack{
 										Image(systemName: "person.badge.plus")
@@ -102,7 +105,6 @@ struct CallMenu: View {
 									}
 									.frame(width: 100, height: 100)
 								})
-								
 								Spacer()
 								Button(action: {
 									menu = "transfer"
@@ -244,6 +246,10 @@ struct CallMenu: View {
 							timeStamp = linphone.getTimeOnCall()
 						}
 					Spacer()
+					HStack{
+						Image(systemName: "arrow.up.right")
+						Text(displayData)
+					}
 					Group {
 						HStack {
 							Spacer()
@@ -287,17 +293,17 @@ struct CallMenu: View {
 						}
 						Spacer()
 					}
-					
 					HStack {
 						Spacer()
 						Button(action: {
+							displayData = ""
 							menu = "main"
 						}, label: {
 							VStack{
 								Image(systemName: "arrowshape.turn.up.backward.fill")
 									.resizable()
 									.frame(width: 50, height: 50)
-								Text("Hide")
+								Text("Back")
 							}
 							.frame(width: 100, height: 100)
 						})
@@ -316,7 +322,7 @@ struct CallMenu: View {
 						})
 						Spacer()
 						Button(action: {
-							// TODO Transfer the call
+							linphone.transferCall(destination: displayData)
 						}, label: {
 							VStack{
 								Image(systemName: "phone.fill.arrow.right")
@@ -345,6 +351,10 @@ struct CallMenu: View {
 							timeStamp = linphone.getTimeOnCall()
 						}
 					Spacer()
+					HStack{
+						Image(systemName: "person.3.fill")
+						Text(displayData)
+					}
 					Group {
 						HStack {
 							Spacer()
@@ -375,7 +385,6 @@ struct CallMenu: View {
 							conferenceButton(number: "9", t9chars: "WXYZ")
 							Spacer()
 						}
-						
 						Spacer()
 						HStack {
 							Spacer()
@@ -388,10 +397,10 @@ struct CallMenu: View {
 						}
 						Spacer()
 					}
-					
 					HStack {
 						Spacer()
 						Button(action: {
+							displayData = ""
 							menu = "main"
 						}, label: {
 							VStack{
@@ -416,7 +425,8 @@ struct CallMenu: View {
 							.frame(width: 100, height: 100)
 						})
 						Button(action: {
-							//TODO add the phone number to conference
+							linphone.conferenceDial(destination: displayData)
+							menu = "main"
 						}, label: {
 							VStack{
 								Image(systemName: "person.fill.badge.plus")
@@ -437,7 +447,8 @@ struct CallMenu: View {
 				.onAppear(perform: {
 					menu = "main"
 					NSLog("Menu was set to a wrong value, setting it to main")
-				})
+				}
+			)
 		}
 	}
 	func numpadButton(number: String, t9chars: String?) -> some View {
@@ -456,7 +467,8 @@ struct CallMenu: View {
 	}
 	func conferenceButton(number: String, t9chars: String?) -> some View {
 		Button(action: {
-			
+			linphone.dialTone(tone: number.utf8CString[0])
+			displayData += number
 		}, label: {
 			VStack{
 				Text(number)
@@ -470,7 +482,8 @@ struct CallMenu: View {
 	}
 	func transferButton(number: String, t9chars: String?) -> some View {
 		Button(action: {
-			
+			linphone.dialTone(tone: number.utf8CString[0])
+			displayData += number
 		}, label: {
 			VStack{
 				Text(number)
@@ -483,7 +496,6 @@ struct CallMenu: View {
 		})
 	}
 }
-
 
 struct CallMenu_Previews: PreviewProvider {
 	static var previews: some View {
