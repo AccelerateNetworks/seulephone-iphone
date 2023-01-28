@@ -9,7 +9,7 @@ def basic_pods
 	end	
 end
 
-target 'accelnet (iOS)' do
+target 'seulephone (iOS)' do
   platform :ios, '11.0'
   pod 'PhoneNumberKit', '~> 3.3'
   pod 'Alamofire', '~> 5.4'
@@ -17,7 +17,7 @@ target 'accelnet (iOS)' do
   basic_pods
 end
 
-#target 'accelnet (macOS)' do
+#target 'seulephone (macOS)' do
 #  platform :osx, '11.0'
 #  use_frameworks!
 #  basic_pods

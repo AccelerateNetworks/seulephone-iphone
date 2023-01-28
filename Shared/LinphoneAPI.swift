@@ -1,6 +1,5 @@
 //
 //  Account.swift
-//  accelnet
 //
 //  Created by piajesse on 10/19/21.
 //
@@ -247,14 +246,14 @@ public class LinphoneAPI : ObservableObject {
 	}
 	func conferenceDial(destination: String) {
 		if (conference == nil) {
-			guard let cp = try? mCore.createConferenceParams() else {
-				NSLog("Unable to create conference parameters")
-				return
-			}
-			if let currentParams = currentCall?.currentParams  {
-				cp.videoEnabled = currentParams.videoEnabled
-			}
-			conference = try? mCore.createConferenceWithParams(params: cp)
+//			guard let cp = try? mCore.createConferenceParams() else {
+//				NSLog("Unable to create conference parameters")
+//				return
+//			}
+//			if let currentParams = currentCall?.currentParams  {
+//				cp.videoEnabled = currentParams.videoEnabled
+//			}
+//			conference = try? mCore.createConferenceWithParams(params: cp)
 		}
 		mCore.calls.forEach { call in
 			if (call.conference == nil || call.conference?.participantCount == 1) {

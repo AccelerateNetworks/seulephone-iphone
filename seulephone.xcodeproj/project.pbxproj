@@ -11,8 +11,8 @@
 		4A5C01E5271F6E0D00B77001 /* Tests_iOSLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A5C01E4271F6E0D00B77001 /* Tests_iOSLaunchTests.swift */; };
 		4A5C01EF271F6E0D00B77001 /* Tests_macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A5C01EE271F6E0D00B77001 /* Tests_macOS.swift */; };
 		4A5C01F1271F6E0D00B77001 /* Tests_macOSLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A5C01F0271F6E0D00B77001 /* Tests_macOSLaunchTests.swift */; };
-		4A5C01F2271F6E0D00B77001 /* accelnetApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A5C01CA271F6E0C00B77001 /* accelnetApp.swift */; };
-		4A5C01F3271F6E0D00B77001 /* accelnetApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A5C01CA271F6E0C00B77001 /* accelnetApp.swift */; };
+		4A5C01F2271F6E0D00B77001 /* seulephoneApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A5C01CA271F6E0C00B77001 /* seulephoneApp.swift */; };
+		4A5C01F3271F6E0D00B77001 /* seulephoneApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A5C01CA271F6E0C00B77001 /* seulephoneApp.swift */; };
 		4A5C01F6271F6E0D00B77001 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4A5C01CC271F6E0D00B77001 /* Assets.xcassets */; };
 		4A5C01F7271F6E0D00B77001 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4A5C01CC271F6E0D00B77001 /* Assets.xcassets */; };
 		4A5C020C271FA5E000B77001 /* LinphoneAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A5C020B271FA5E000B77001 /* LinphoneAPI.swift */; };
@@ -21,7 +21,7 @@
 		4A7828D32725824D00937386 /* TheView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A7828D12725824D00937386 /* TheView.swift */; };
 		4ABF9BA92742D5B10068EA0D /* CallMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ABF9BA82742D5B10068EA0D /* CallMenu.swift */; };
 		4ABF9BAA2742D5B10068EA0D /* CallMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ABF9BA82742D5B10068EA0D /* CallMenu.swift */; };
-		F16CFACC55A285F1A9DBF5EE /* Pods_accelnet__iOS_.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB9A2894748CD4A3CDE97D38 /* Pods_accelnet__iOS_.framework */; };
+		E5D13EF0BB008D017F3DFA01 /* Pods_seulephone__iOS_.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 075A97CAA6DA8AAB74695A95 /* Pods_seulephone__iOS_.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,12 +42,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		075A97CAA6DA8AAB74695A95 /* Pods_seulephone__iOS_.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_seulephone__iOS_.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		118346E0A012F62E96AC426D /* Pods-accelnet (iOS).debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-accelnet (iOS).debug.xcconfig"; path = "Target Support Files/Pods-accelnet (iOS)/Pods-accelnet (iOS).debug.xcconfig"; sourceTree = "<group>"; };
-		4A0575C627484B970029E797 /* accelnet (iOS).entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "accelnet (iOS).entitlements"; sourceTree = "<group>"; };
-		4A5C01CA271F6E0C00B77001 /* accelnetApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = accelnetApp.swift; sourceTree = "<group>"; };
+		1D39657120A811E592BE24E0 /* Pods-seulephone (iOS).debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-seulephone (iOS).debug.xcconfig"; path = "Target Support Files/Pods-seulephone (iOS)/Pods-seulephone (iOS).debug.xcconfig"; sourceTree = "<group>"; };
+		3F568635BA27D5D221D02960 /* Pods-seulephone (iOS).release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-seulephone (iOS).release.xcconfig"; path = "Target Support Files/Pods-seulephone (iOS)/Pods-seulephone (iOS).release.xcconfig"; sourceTree = "<group>"; };
+		4A0575C627484B970029E797 /* seulephone (iOS).entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "seulephone (iOS).entitlements"; sourceTree = "<group>"; };
+		4A5C01CA271F6E0C00B77001 /* seulephoneApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = seulephoneApp.swift; sourceTree = "<group>"; };
 		4A5C01CC271F6E0D00B77001 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		4A5C01D1271F6E0D00B77001 /* AccelNet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AccelNet.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		4A5C01D7271F6E0D00B77001 /* accelnet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = accelnet.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4A5C01D1271F6E0D00B77001 /* Seulephone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Seulephone.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4A5C01D7271F6E0D00B77001 /* seulephone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = seulephone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4A5C01D9271F6E0D00B77001 /* macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
 		4A5C01DE271F6E0D00B77001 /* Tests iOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tests iOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4A5C01E2271F6E0D00B77001 /* Tests_iOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_iOS.swift; sourceTree = "<group>"; };
@@ -55,13 +58,12 @@
 		4A5C01EA271F6E0D00B77001 /* Tests macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tests macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4A5C01EE271F6E0D00B77001 /* Tests_macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOS.swift; sourceTree = "<group>"; };
 		4A5C01F0271F6E0D00B77001 /* Tests_macOSLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOSLaunchTests.swift; sourceTree = "<group>"; };
-		4A5C0206271F80C300B77001 /* accelnet--macOS--Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "accelnet--macOS--Info.plist"; sourceTree = "<group>"; };
-		4A5C0207271F824C00B77001 /* accelnet--iOS--Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "accelnet--iOS--Info.plist"; sourceTree = "<group>"; };
+		4A5C0206271F80C300B77001 /* seulephone--macOS--Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "seulephone--macOS--Info.plist"; sourceTree = "<group>"; };
+		4A5C0207271F824C00B77001 /* seulephone--iOS--Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "seulephone--iOS--Info.plist"; sourceTree = "<group>"; };
 		4A5C020B271FA5E000B77001 /* LinphoneAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinphoneAPI.swift; sourceTree = "<group>"; };
 		4A7828D12725824D00937386 /* TheView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TheView.swift; sourceTree = "<group>"; };
 		4ABF9BA82742D5B10068EA0D /* CallMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallMenu.swift; sourceTree = "<group>"; };
 		C58FC3F1C6A5E879D41775D4 /* Pods-accelnet (iOS).release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-accelnet (iOS).release.xcconfig"; path = "Target Support Files/Pods-accelnet (iOS)/Pods-accelnet (iOS).release.xcconfig"; sourceTree = "<group>"; };
-		DB9A2894748CD4A3CDE97D38 /* Pods_accelnet__iOS_.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_accelnet__iOS_.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,7 +71,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F16CFACC55A285F1A9DBF5EE /* Pods_accelnet__iOS_.framework in Frameworks */,
+				E5D13EF0BB008D017F3DFA01 /* Pods_seulephone__iOS_.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -100,9 +102,9 @@
 		4A5C01C4271F6E0C00B77001 = {
 			isa = PBXGroup;
 			children = (
-				4A0575C627484B970029E797 /* accelnet (iOS).entitlements */,
-				4A5C0207271F824C00B77001 /* accelnet--iOS--Info.plist */,
-				4A5C0206271F80C300B77001 /* accelnet--macOS--Info.plist */,
+				4A0575C627484B970029E797 /* seulephone (iOS).entitlements */,
+				4A5C0207271F824C00B77001 /* seulephone--iOS--Info.plist */,
+				4A5C0206271F80C300B77001 /* seulephone--macOS--Info.plist */,
 				4A5C01C9271F6E0C00B77001 /* Shared */,
 				4A5C01D8271F6E0D00B77001 /* macOS */,
 				4A5C01E1271F6E0D00B77001 /* Tests iOS */,
@@ -116,7 +118,7 @@
 		4A5C01C9271F6E0C00B77001 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				4A5C01CA271F6E0C00B77001 /* accelnetApp.swift */,
+				4A5C01CA271F6E0C00B77001 /* seulephoneApp.swift */,
 				4A5C01CC271F6E0D00B77001 /* Assets.xcassets */,
 				4A5C020B271FA5E000B77001 /* LinphoneAPI.swift */,
 				4A7828D12725824D00937386 /* TheView.swift */,
@@ -128,8 +130,8 @@
 		4A5C01D2271F6E0D00B77001 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				4A5C01D1271F6E0D00B77001 /* AccelNet.app */,
-				4A5C01D7271F6E0D00B77001 /* accelnet.app */,
+				4A5C01D1271F6E0D00B77001 /* Seulephone.app */,
+				4A5C01D7271F6E0D00B77001 /* seulephone.app */,
 				4A5C01DE271F6E0D00B77001 /* Tests iOS.xctest */,
 				4A5C01EA271F6E0D00B77001 /* Tests macOS.xctest */,
 			);
@@ -165,7 +167,7 @@
 		4D5D7446D0AF315A92B12E89 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				DB9A2894748CD4A3CDE97D38 /* Pods_accelnet__iOS_.framework */,
+				075A97CAA6DA8AAB74695A95 /* Pods_seulephone__iOS_.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -175,6 +177,8 @@
 			children = (
 				118346E0A012F62E96AC426D /* Pods-accelnet (iOS).debug.xcconfig */,
 				C58FC3F1C6A5E879D41775D4 /* Pods-accelnet (iOS).release.xcconfig */,
+				1D39657120A811E592BE24E0 /* Pods-seulephone (iOS).debug.xcconfig */,
+				3F568635BA27D5D221D02960 /* Pods-seulephone (iOS).release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -182,9 +186,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		4A5C01D0271F6E0D00B77001 /* accelnet (iOS) */ = {
+		4A5C01D0271F6E0D00B77001 /* seulephone (iOS) */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4A5C01FA271F6E0D00B77001 /* Build configuration list for PBXNativeTarget "accelnet (iOS)" */;
+			buildConfigurationList = 4A5C01FA271F6E0D00B77001 /* Build configuration list for PBXNativeTarget "seulephone (iOS)" */;
 			buildPhases = (
 				678C428F9A339612A83CED38 /* [CP] Check Pods Manifest.lock */,
 				4A5C01CD271F6E0D00B77001 /* Sources */,
@@ -196,14 +200,14 @@
 			);
 			dependencies = (
 			);
-			name = "accelnet (iOS)";
+			name = "seulephone (iOS)";
 			productName = "accelnet (iOS)";
-			productReference = 4A5C01D1271F6E0D00B77001 /* AccelNet.app */;
+			productReference = 4A5C01D1271F6E0D00B77001 /* Seulephone.app */;
 			productType = "com.apple.product-type.application";
 		};
-		4A5C01D6271F6E0D00B77001 /* accelnet (macOS) */ = {
+		4A5C01D6271F6E0D00B77001 /* seulephone (macOS) */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4A5C01FD271F6E0D00B77001 /* Build configuration list for PBXNativeTarget "accelnet (macOS)" */;
+			buildConfigurationList = 4A5C01FD271F6E0D00B77001 /* Build configuration list for PBXNativeTarget "seulephone (macOS)" */;
 			buildPhases = (
 				4A5C01D3271F6E0D00B77001 /* Sources */,
 				4A5C01D4271F6E0D00B77001 /* Frameworks */,
@@ -213,9 +217,9 @@
 			);
 			dependencies = (
 			);
-			name = "accelnet (macOS)";
+			name = "seulephone (macOS)";
 			productName = "accelnet (macOS)";
-			productReference = 4A5C01D7271F6E0D00B77001 /* accelnet.app */;
+			productReference = 4A5C01D7271F6E0D00B77001 /* seulephone.app */;
 			productType = "com.apple.product-type.application";
 		};
 		4A5C01DD271F6E0D00B77001 /* Tests iOS */ = {
@@ -280,7 +284,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 4A5C01C8271F6E0C00B77001 /* Build configuration list for PBXProject "accelnet" */;
+			buildConfigurationList = 4A5C01C8271F6E0C00B77001 /* Build configuration list for PBXProject "seulephone" */;
 			compatibilityVersion = "Xcode 13.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -293,8 +297,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				4A5C01D0271F6E0D00B77001 /* accelnet (iOS) */,
-				4A5C01D6271F6E0D00B77001 /* accelnet (macOS) */,
+				4A5C01D0271F6E0D00B77001 /* seulephone (iOS) */,
+				4A5C01D6271F6E0D00B77001 /* seulephone (macOS) */,
 				4A5C01DD271F6E0D00B77001 /* Tests iOS */,
 				4A5C01E9271F6E0D00B77001 /* Tests macOS */,
 			);
@@ -341,15 +345,14 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-accelnet (iOS)/Pods-accelnet (iOS)-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-seulephone (iOS)/Pods-seulephone (iOS)-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-accelnet (iOS)/Pods-accelnet (iOS)-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-accelnet (iOS)/Pods-accelnet (iOS)-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-seulephone (iOS)/Pods-seulephone (iOS)-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		678C428F9A339612A83CED38 /* [CP] Check Pods Manifest.lock */ = {
@@ -367,7 +370,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-accelnet (iOS)-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-seulephone (iOS)-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -382,7 +385,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4ABF9BA92742D5B10068EA0D /* CallMenu.swift in Sources */,
-				4A5C01F2271F6E0D00B77001 /* accelnetApp.swift in Sources */,
+				4A5C01F2271F6E0D00B77001 /* seulephoneApp.swift in Sources */,
 				4A7828D22725824D00937386 /* TheView.swift in Sources */,
 				4A5C020C271FA5E000B77001 /* LinphoneAPI.swift in Sources */,
 			);
@@ -393,7 +396,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4ABF9BAA2742D5B10068EA0D /* CallMenu.swift in Sources */,
-				4A5C01F3271F6E0D00B77001 /* accelnetApp.swift in Sources */,
+				4A5C01F3271F6E0D00B77001 /* seulephoneApp.swift in Sources */,
 				4A7828D32725824D00937386 /* TheView.swift in Sources */,
 				4A5C020D271FA5E000B77001 /* LinphoneAPI.swift in Sources */,
 			);
@@ -422,12 +425,12 @@
 /* Begin PBXTargetDependency section */
 		4A5C01E0271F6E0D00B77001 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 4A5C01D0271F6E0D00B77001 /* accelnet (iOS) */;
+			target = 4A5C01D0271F6E0D00B77001 /* seulephone (iOS) */;
 			targetProxy = 4A5C01DF271F6E0D00B77001 /* PBXContainerItemProxy */;
 		};
 		4A5C01EC271F6E0D00B77001 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 4A5C01D6271F6E0D00B77001 /* accelnet (macOS) */;
+			target = 4A5C01D6271F6E0D00B77001 /* seulephone (macOS) */;
 			targetProxy = 4A5C01EB271F6E0D00B77001 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -546,17 +549,17 @@
 		};
 		4A5C01FB271F6E0D00B77001 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 118346E0A012F62E96AC426D /* Pods-accelnet (iOS).debug.xcconfig */;
+			baseConfigurationReference = 1D39657120A811E592BE24E0 /* Pods-seulephone (iOS).debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "accelnet (iOS).entitlements";
+				CODE_SIGN_ENTITLEMENTS = "seulephone (iOS).entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = L9AX9ZLA26;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "accelnet--iOS--Info.plist";
+				INFOPLIST_FILE = "seulephone--iOS--Info.plist";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Cameras access";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Microphone access";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -564,6 +567,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIRequiredDeviceCapabilities = armv7;
+				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -573,8 +577,8 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 0.3;
-				PRODUCT_BUNDLE_IDENTIFIER = com.acceleratenetwork.AccelNet;
-				PRODUCT_NAME = AccelNet;
+				PRODUCT_BUNDLE_IDENTIFIER = com.acceleratenetwork.seulephone;
+				PRODUCT_NAME = Seulephone;
 				SDKROOT = iphoneos;
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -585,17 +589,17 @@
 		};
 		4A5C01FC271F6E0D00B77001 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C58FC3F1C6A5E879D41775D4 /* Pods-accelnet (iOS).release.xcconfig */;
+			baseConfigurationReference = 3F568635BA27D5D221D02960 /* Pods-seulephone (iOS).release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "accelnet (iOS).entitlements";
+				CODE_SIGN_ENTITLEMENTS = "seulephone (iOS).entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = L9AX9ZLA26;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "accelnet--iOS--Info.plist";
+				INFOPLIST_FILE = "seulephone--iOS--Info.plist";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Cameras access";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Microphone access";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -603,6 +607,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIRequiredDeviceCapabilities = armv7;
+				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -612,8 +617,8 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 0.3;
-				PRODUCT_BUNDLE_IDENTIFIER = com.acceleratenetwork.AccelNet;
-				PRODUCT_NAME = AccelNet;
+				PRODUCT_BUNDLE_IDENTIFIER = com.acceleratenetwork.seulephone;
+				PRODUCT_NAME = Seulephone;
 				SDKROOT = iphoneos;
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -637,7 +642,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "accelnet--macOS--Info.plist";
+				INFOPLIST_FILE = "seulephone--macOS--Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -647,7 +652,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.acceleratenetwork.accelnet;
-				PRODUCT_NAME = accelnet;
+				PRODUCT_NAME = seulephone;
 				SDKROOT = macosx;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -668,7 +673,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "accelnet--macOS--Info.plist";
+				INFOPLIST_FILE = "seulephone--macOS--Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -678,7 +683,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.acceleratenetwork.accelnet;
-				PRODUCT_NAME = accelnet;
+				PRODUCT_NAME = seulephone;
 				SDKROOT = macosx;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -706,7 +711,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = "accelnet (iOS)";
+				TEST_TARGET_NAME = "Seulephone dev";
 			};
 			name = Debug;
 		};
@@ -731,7 +736,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = "accelnet (iOS)";
+				TEST_TARGET_NAME = "Seulephone dev";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -757,7 +762,7 @@
 				SDKROOT = macosx;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TEST_TARGET_NAME = "accelnet (macOS)";
+				TEST_TARGET_NAME = "Seulephone dev";
 			};
 			name = Debug;
 		};
@@ -782,14 +787,14 @@
 				SDKROOT = macosx;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TEST_TARGET_NAME = "accelnet (macOS)";
+				TEST_TARGET_NAME = "Seulephone dev";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		4A5C01C8271F6E0C00B77001 /* Build configuration list for PBXProject "accelnet" */ = {
+		4A5C01C8271F6E0C00B77001 /* Build configuration list for PBXProject "seulephone" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4A5C01F8271F6E0D00B77001 /* Debug */,
@@ -798,7 +803,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		4A5C01FA271F6E0D00B77001 /* Build configuration list for PBXNativeTarget "accelnet (iOS)" */ = {
+		4A5C01FA271F6E0D00B77001 /* Build configuration list for PBXNativeTarget "seulephone (iOS)" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4A5C01FB271F6E0D00B77001 /* Debug */,
@@ -807,7 +812,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		4A5C01FD271F6E0D00B77001 /* Build configuration list for PBXNativeTarget "accelnet (macOS)" */ = {
+		4A5C01FD271F6E0D00B77001 /* Build configuration list for PBXNativeTarget "seulephone (macOS)" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4A5C01FE271F6E0D00B77001 /* Debug */,

@@ -1,5 +1,5 @@
 //
-//  accelnetApp.swift
+//  seulephoneApp.swift
 //  Shared
 //
 //  Created by piajesse on 10/19/21.
@@ -10,7 +10,7 @@ import SwiftUI
 public var linphone: LinphoneAPI = LinphoneAPI()
 
 @main
-struct accelnetApp: App {
+struct seulephoneApp: App {
 	init() {
 		let provisioingURL: String = UserDefaults.standard.string(forKey: "ProvisioningURL") ?? "nil"
 		let jsonString: String = UserDefaults.standard.string(forKey: "JSONString") ?? "nil"
